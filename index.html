@@ -4,18 +4,92 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>The memes generator</title>
+    <title>The Memes Generator</title>
     <link rel="stylesheet" href="css/main.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
   </head>
-  <body>
-    <nav class="top-nav">
-      <a href="#">The memes generator</a>
-      <a href="#">Gallery</a>
-      <a href="#">My Memes</a>
+  <body class="main-layout" onload="onInit()">
+    <header
+    class="main-header full main-layout flex align-center "
+    >
+    <nav class="main-nav flex top-nav">
+      <img id="top-logo" src="img/logo.jpg" alt="">
+      <ul class="flex clean-list align-center">
+        <li><a href="#">Memes</a></li>
+        <li><a href="#">Gallery</a></li>
+        <li><a href="#">About</a></li>
+      </ul>
     </nav>
-    <section class="gallery"></section>
+    </header>
 
-    <section class="editor"></section>
+    <section class="gallery-content">
+        <section class="search-box">
+            <input
+              class="search-Input"
+              type="text"
+              onkeyup="onKeyUpSearch()"
+              placeholder="Search meme..."
+            />
+          </section>
+        <section class="gallery" ></section>
+    </section>
+
+    <section class=" editor ">
+      <h2>Editor</h2>
+      <div class="canvas-container ">
+        <canvas id="my-canvas" height="600" width="600"></canvas>
+      </div>
+      <div class="operators">
+        <div class="settings">
+            <ul class="flex clean-list">
+                <li><span class="material-symbols-outlined" onclick="onDecreaseFont()"> text_decrease </span></li>
+                <li><span class="material-symbols-outlined" onclick="onIncreaseFont(this.value)"> text_increase </span></li>
+                <li><span class="material-symbols-outlined" onclick="clearCanvas()"> delete </span></li>
+                <li><label for="color"><span class="material-symbols-outlined">palette</label></span></li>
+            </ul>
+        </div>
+        <input type="text" onkeyup="onTextInput(this.value)" />
+          <!-- <input type="color" onchange="onChangeTextColor(this.value)" />   -->
+      </div>
+ 
+</div>
+<div class="social">
+    <a href="#" class="btn" onclick="downloadImg(this)" download="my-img.jpeg"
+    ><button>DOWNLOAD</button></a>
+  <button onclick="onUploadImg()">SHARE</button>
+</div>
+</div>
+</section>
+<script src="js/download-share-service.js"></script>
+    <script src="js/memeService.js"></script>
+    <script src="js/memeController.js"></script>
     <script src="js/main.js"></script>
   </body>
 </html>
+
+
+
+
+
+
+<!-- <main class="main-content card-layout">
+<div class="card flex">
+  <img class="card-image" src="/images/001.png" alt="" />
+  <div class="card-content">
+    <h2 class="card-title">
+      Duis aute irure dolor in henderit in voluptate.
+    </h2>
+    <p class="card-text">
+      Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+      nisi ut aliquip ex ea commo doconsequat, sunt in culpa qui officia
+      deserunt mollit anim id est laborum.
+      <br /><br /><br />
+      Duis aute irure dolor in reprehenderit in voluptate velit esse
+      cillum dolore eu fugiat nulla pariatur...
+    </p>
+    <button class="card-read">Continue Reading</button>
+  </div>
+</div> -->
