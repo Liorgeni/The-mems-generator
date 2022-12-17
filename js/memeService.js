@@ -1,51 +1,66 @@
 "use strict";
 
 let currImg;
-var gFilterBy = { keyWords: "" };
-
+var gFilterBy = { keywords: "" };
 let gKeywordSearchCountMap = { funny: 12, cat: 16, baby: 2 };
 
-const defaultLine = {
-  txt: "",
-  size: 20,
-  align: "left",
-  color: "trasparent",
-};
-
-let gImgs = [
-  { id: 1, url: "img/1.jpg", keywords: ["funny", "cat"] },
-  { id: 2, url: "img/2.jpg", keywords: ["funny", "cat"] },
-  { id: 3, url: "img/3.jpg", keywords: ["buddy", "cat"] },
-  { id: 4, url: "img/4.jpg", keywords: ["funny", "cat"] },
-  { id: 5, url: "img/5.jpg", keywords: ["funny", "cat"] },
-  { id: 6, url: "img/6.jpg", keywords: ["funny", "cat"] },
-  { id: 7, url: "img/7.jpg", keywords: ["funny", "cat"] },
-  { id: 8, url: "img/8.jpg", keywords: ["funny", "cat"] },
-  { id: 9, url: "img/9.jpg", keywords: ["funny", "loli"] },
-  { id: 10, url: "img/10.jpg", keywords: ["funny", "cat"] },
-  { id: 11, url: "img/11.jpg", keywords: ["funny", "cat"] },
-  { id: 12, url: "img/12.jpg", keywords: ["funny", "cat"] },
-  { id: 13, url: "img/13.jpg", keywords: ["funny", "cat"] },
-  { id: 14, url: "img/14.jpg", keywords: ["funny", "cat"] },
-  { id: 15, url: "img/15.jpg", keywords: ["funny", "cat"] },
-  { id: 16, url: "img/16.jpg", keywords: ["funny", "cat"] },
-  { id: 17, url: "img/17.jpg", keywords: ["funny", "cat"] },
-  { id: 18, url: "img/18.jpg", keywords: ["funny", "cat"] },
+const gImgs = [
+  { id: 1, url: "img/1.jpg", keywords: ["trump", "usa"] },
+  { id: 2, url: "img/2.jpg", keywords: ["dogs", "love"] },
+  { id: 3, url: "img/3.jpg", keywords: ["baby", "dog"] },
+  { id: 4, url: "img/4.jpg", keywords: ["love", "cat"] },
+  { id: 5, url: "img/5.jpg", keywords: ["funny", "baby"] },
+  { id: 6, url: "img/6.jpg", keywords: ["funny", "man"] },
+  { id: 7, url: "img/7.jpg", keywords: ["funny", "baby"] },
+  { id: 8, url: "img/8.jpg", keywords: ["tell", "man"] },
+  { id: 9, url: "img/9.jpg", keywords: ["funny", "baby"] },
+  { id: 10, url: "img/10.jpg", keywords: ["president", "usa"] },
+  { id: 11, url: "img/11.jpg", keywords: ["man", "love"] },
+  { id: 12, url: "img/12.jpg", keywords: ["man", "good"] },
+  { id: 13, url: "img/13.jpg", keywords: ["leonardo", "actor"] },
+  { id: 14, url: "img/14.jpg", keywords: ["matrix", "man"] },
+  { id: 15, url: "img/15.jpg", keywords: ["man", "actor"] },
+  { id: 16, url: "img/16.jpg", keywords: ["movies", "man"] },
+  { id: 17, url: "img/17.jpg", keywords: ["russia", "president"] },
+  { id: 18, url: "img/18.jpg", keywords: ["movies", "baby"] },
 ];
 
-let gMeme = {
-  selectedImgId: 5,
-  // selectedLineIdx: lines.length - 1 || 0,
+var gMeme = {
+  selectedImgId: 0,
   selectedLineIdx: 0,
-  lines: [],
+  lines: [
+    {
+      txt: "",
+      size: 70,
+      align: "left",
+      color: "white",
+      x: 10,
+      y: 50,
+    },
+  ],
 };
+
+function getDefaultNewLine() {
+  return {
+    txt: "",
+    size: 40,
+    align: "left",
+    color: "white",
+    x: 10,
+    y: 50,
+  };
+}
 
 function setGMeme(id) {
   gMeme.selectedImgId = id;
 }
 
 function creatNewLine() {
-  gMeme.lines.push(defaultLine);
+  const newLine = getDefaultNewLine();
+  gMeme.lines.push(newLine);
+  gMeme.selectedLineIdx = gMeme.lines.length - 1;
+  gMeme.lines[gMeme.selectedLineIdx].y =
+    gMeme.lines[gMeme.selectedLineIdx - 1].y + 30;
 }
 
 function getGMeme() {
@@ -54,21 +69,12 @@ function getGMeme() {
 
 function getCurImg() {
   const curImg = gImgs.find((img) => img.id === gMeme.selectedImgId);
-  console.log(curImg);
   return curImg;
 }
 
 function setFilterBy(filterBy) {
-  //   const keyWords = gImgs.filter((img) => img.keywords);
-  //   console.log(keyWords);
-
-  // if (filterBy.title !== undefined) gFilterBy.title = filterBy.title;
-  // console.log(filterBy.title);
-  //   keyWords.keyWords = filterBy;
-  gFilterBy.keyWords = filterBy;
-  //   return gFilterBy;
-  console.log(filterBy);
-  return filterBy;
+  gFilterBy.keywords = filterBy;
+  return gFilterBy;
 }
 
 function getImages() {
@@ -76,30 +82,39 @@ function getImages() {
   return images;
 }
 
-// function getMeme(id) {
-//     const meme = gMeme.find(meme=> )
-//   return gMeme;
-// }
-
-function setLineTxt(text) {
-  gMeme.lines[0].txt = text;
+function setTextInput(text) {
+  gMeme.lines[gMeme.selectedLineIdx].txt = text;
+}
+function setFontSizeUp() {
+  gMeme.lines[gMeme.selectedLineIdx].size += 3;
 }
 
-function increaseFontSize() {
-  gMeme.lines[0].size = gMeme.lines[0].size + 3;
-  console.log(gMeme.lines[0].size);
-  console.log("Text increased");
+function setFontSizeDown() {
+  gMeme.lines[gMeme.selectedLineIdx].size -= 3;
 }
 
-function decreaseFontSize() {
-  gMeme.lines[0].size = gMeme.lines[0].size - 3;
-  console.log("Text decreased");
+function setTextColor(color) {
+  gMeme.lines[gMeme.selectedLineIdx].color = color;
 }
 
-function moveText() {
-  console.log("move text");
+function getGMemeLines() {
+  return gMeme.lines;
 }
 
-function changeTextColor(val) {
-  gMeme.lines[0].color = val;
+function clearCanvas() {
+  gMeme.selectedLineIdx = 0;
+  gMeme.lines = [getDefaultNewLine()];
+}
+
+function getCurLine() {
+  return gMeme.lines[gMeme.selectedLineIdx];
+}
+
+function moveText(x, y) {
+  gMeme.lines[gMeme.selectedLineIdx].x = x;
+  gMeme.lines[gMeme.selectedLineIdx].y = y;
+}
+
+function setSelectedLineIdx(index) {
+  gMeme.selectedLineIdx = index;
 }

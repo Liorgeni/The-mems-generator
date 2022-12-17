@@ -1,142 +1,188 @@
 "use strict";
 
 // Global vars
-
+const CANVAS_PADDING = 140;
 const TOUCH_EVS = ["touchstart", "touchmove", "touchend"];
 
 let gElCanvas;
 let gCtx;
 let isDrag = false;
-
-// let fontSize = gMeme.lines[0].size;
-// let gFillColor = gMeme.lines[0].color;
-
-let fontSize = 10;
-let gFillColor = "white";
-let gStrokelColor = "black";
-
-function onInit() {
-  gElCanvas = document.getElementById("my-canvas");
-  gCtx = gElCanvas.getContext("2d");
-  renderGallery();
-  resizeCanvas();
-  //   addListeners();
-  renderCanvas();
-}
+let isText = false;
+let imgSelected = false;
+let gLastOffsetX;
+let gLastOffsetY;
+let gDiffX;
+let gDiffY;
+let isDownloading = false;
 
 // Renders
 
-function renderGallery() {
-  const images = getImages();
-  console.log(images);
-  var strHTML = images.map(
-    (img) =>
-      `<img onclick="onSelectMeme(${img.id})" src="${img.url}"} alt="" />`
-  );
-
-  document.querySelector(".gallery").innerHTML = strHTML.join();
-}
-
-// onSelectMeme(){
-
-// }
-
 function resizeCanvas() {
   const elContainer = document.querySelector(".canvas-container");
-  gElCanvas.width = 500;
-  gElCanvas.height = 500;
-  console.log(elContainer);
-  console.log(gElCanvas.width);
-}
-
-function renderCanvas() {
-  gCtx.fillStyle = "white";
-  gCtx.fillRect(0, 0, gElCanvas.width, gElCanvas.height);
+  CANVAS_PADDING;
+  gElCanvas.width = elContainer.offsetWidth - CANVAS_PADDING;
+  gElCanvas.height = elContainer.offsetWidth - CANVAS_PADDING;
 }
 
 function renderMeme() {
-  const gMeme = getGMeme();
   const curImg = getCurImg();
-  console.log(curImg.url);
+  if (!getCurImg) {
+    return;
+  }
   const imageToDraw = new Image();
+  const lines = getGMemeLines();
   imageToDraw.src = curImg.url;
   imageToDraw.onload = function () {
     gCtx.drawImage(imageToDraw, 0, 0, gElCanvas.width, gElCanvas.height);
+    lines.forEach((line, idx) => {
+      const textWidth = gCtx.measureText(line.txt, line.x, line.y).width;
+      drawText(line.txt, line.x, line.y, line.size, line.color, line.align);
+      if (idx === gMeme.selectedLineIdx) {
+        drawRect(
+          line.x - 5,
+          line.y - (line.size * 1.333) / 2 - 5,
+          textWidth + 20,
+          line.size * 1.333
+        );
+      }
+    });
   };
-}
-
-function clearCanvas() {
-  gCtx.clearRect(0, 0, gElCanvas.width, gElCanvas.height);
 }
 
 // Actions
 
 function onSelectMeme(id) {
+  document.querySelector(".gallery-content").classList.add("hide");
+  document.querySelector(".grid-container").style.display = "grid";
+  resizeCanvas();
   setGMeme(id);
   renderMeme();
 }
 
-function onTextInput(text) {
-  setLineTxt(text);
-  drawText(text, 100, 100);
+function onClearCanvas() {
+  clearCanvas();
+  renderMeme();
+  clearInput();
 }
 
+function onTextInput(text) {
+  isText = true;
+  setTextInput(text);
+  renderMeme();
+}
+
+function onAddLine() {
+  creatNewLine();
+  renderMeme();
+  clearInput();
+}
+
+// set Text
+
 function onIncreaseFont() {
-  fontSize = fontSize + 3;
-  increaseFontSize();
+  setFontSizeUp();
+  renderMeme();
 }
 
 function onDecreaseFont() {
-  fontSize = fontSize - 3;
-  decreaseFontSize();
+  setFontSizeDown();
+  renderMeme();
 }
 
-function onChangeTextColor(val) {
-  gFillColor = val;
-  changeTextColor(val);
+// Set Text color
+
+function onChangeTextColor(color) {
+  renderMeme();
+  setTextColor(color);
 }
 
-// Set Colors
+// Set text align
 
-function drawText(text, x, y) {
-  console.log(fontSize);
+function onAlignTextLeft() {
+  const curLine = getCurLine();
+  if (!curLine.txt) return;
+  moveText(10, curLine.y);
+  renderMeme();
+}
+function onAlignTextRight() {
+  const curLine = getCurLine();
+  if (!curLine.txt) return;
+  const textWidth = gCtx.measureText(curLine.txt, curLine.x, curLine.y).width;
+  moveText(gElCanvas.width - textWidth - 10, curLine.y);
+  renderMeme();
+}
+function onAlignTextCenter() {
+  const curLine = getCurLine();
+  if (!curLine.txt) return;
+  const textWidth = gCtx.measureText(curLine.txt, curLine.x, curLine.y).width;
+  moveText(gElCanvas.width / 2 - textWidth, curLine.y);
+  renderMeme();
+}
+
+// Draw Text
+
+function drawText(text, x, y, size, color, align) {
   gCtx.lineWidth = 1;
-  gCtx.strokeStyle = gStrokelColor;
-  gCtx.fillStyle = gFillColor;
-  gCtx.font = fontSize + "px arial";
-  gCtx.textAlign = "left";
-  gCtx.textBaseline = "middle";
+  gCtx.strokeStyle = "black";
+  gCtx.fillStyle = color;
+  gCtx.font = size + "px impact";
+  gCtx.textAlign = align;
   gCtx.fillText(text, x, y);
   gCtx.strokeText(text, x, y);
-  gCtx.fill();
 }
 
-// const defaultLine = {
-//   txt: "",
-//   size: 20,
-//   align: "left",
-//   color: "trasparent",
-// };
-// Mouse Events
+function clearInput() {
+  document.querySelector(".text-input").value = "";
+}
 
-// function onDown(ev) {
-//   isDrag = true;
-//   moveText(ev);
-// }
+function onChangeTextValue() {
+  const curLine = getCurLine();
+  document.querySelector(".text-input").value = curLine.txt;
+}
 
-// function onMove(ev) {
-//   if (!isDrag) return;
-//   moveText(ev);
-// }
+function drawRect(x, y, width, height) {
+  if (!isText) return;
+  gCtx.beginPath();
+  gCtx.strokeStyle = !isDownloading ? "black" : "white";
+  gCtx.strokeRect(x, y, width, height);
+}
 
-// function onUp() {
-//   isDrag = false;
-// }
+// Drag Events
 
-// function moveText(ev) {
-//   const { offsetX, offsetY } = ev;
-//   console.log("offsetX, offsetY:", offsetX, offsetY);
-// }
+function onDown(ev) {
+  const indexOfClickedText = indexOfClickedOnText(ev.offsetX, ev.offsetY);
+  if (indexOfClickedText > -1) {
+    isDrag = true;
+    gLastOffsetX = ev.offsetX;
+    gLastOffsetY = ev.offsetY;
+    setSelectedLineIdx(indexOfClickedText);
+    onChangeTextValue();
+    renderMeme();
+  }
+}
+
+function onMove(ev) {
+  if (!isDrag) return;
+
+  if (gLastOffsetX !== ev.offsetX || gLastOffsetY !== ev.offsetY) {
+    gElCanvas.style.cursor = "grabbing";
+    gDiffX = ev.offsetX - gLastOffsetX;
+    gDiffY = ev.offsetY - gLastOffsetY;
+    gLastOffsetX = ev.offsetX;
+    gLastOffsetY = ev.offsetY;
+  }
+
+  const curLine = getCurLine();
+  if (curLine.x + gDiffX !== NaN && curLine.y + gDiffY) {
+    moveText(curLine.x + gDiffX, curLine.y + gDiffY);
+    renderMeme();
+  }
+}
+
+function onUp(ev) {
+  gElCanvas.style.cursor = "grab";
+  isDrag = false;
+}
 
 // On Download-Upload
 
@@ -158,43 +204,52 @@ function onUploadImg() {
 
 // Listeners
 
-// function addListeners() {
-//   addMouseListeners();
-//   addTouchListeners();
-//   window.addEventListener("resize", () => {
-//     resizeCanvas();
-//     renderCanvas();
-//   });
-// }
+function addListeners() {
+  addMouseListeners();
+  addTouchListeners();
+  window.addEventListener("resize", () => {
+    if (!imgSelected) return;
+    resizeCanvas();
+    renderMeme();
+  });
+}
 
-// function addMouseListeners() {
-//   gElCanvas.addEventListener("mousemove", onMove);
-//   gElCanvas.addEventListener("mousedown", onDown);
-//   gElCanvas.addEventListener("mouseup", onUp);
-// }
+function addMouseListeners() {
+  gElCanvas.addEventListener("mousemove", onMove);
+  gElCanvas.addEventListener("mousedown", onDown);
+  gElCanvas.addEventListener("mouseup", onUp);
+}
 
-// function addTouchListeners() {
-//   gElCanvas.addEventListener("touchmove", onMove);
-//   gElCanvas.addEventListener("touchstart", onDown);
-//   gElCanvas.addEventListener("touchend", onUp);
-// }
+function addTouchListeners() {
+  gElCanvas.addEventListener("touchmove", onMove);
+  gElCanvas.addEventListener("touchstart", onDown);
+  gElCanvas.addEventListener("touchend", onUp);
+}
 
-// On Search
+function indexOfClickedOnText(x, y) {
+  const lines = getGMemeLines();
+  let indexToReturn = -1;
 
-function onKeyUpSearch() {
-  setTimeout(() => {
-    const searchStr = document.querySelector(".search-Input").value;
-    const filterBy = setFilterBy(searchStr);
-    renderGallery();
-    document.querySelector(".search-Input").value = searchStr;
+  lines.forEach((line, index) => {
+    const textWidth = gCtx.measureText(line.txt, line.x, line.y).width;
 
-    const queryStringParams = `?keyWords=${filterBy.keyWords}`;
-    const newUrl =
-      window.location.protocol +
-      "//" +
-      window.location.host +
-      window.location.pathname +
-      queryStringParams;
-    window.history.pushState({ path: newUrl }, "", newUrl);
-  }, 1500);
+    if (
+      line.x - 5 < x &&
+      x < line.x + textWidth + 20 &&
+      line.y - (line.size * 1.333) / 2 - 5 < y &&
+      y < line.size * 1.333 + line.y
+    ) {
+      indexToReturn = index;
+    }
+  });
+
+  return indexToReturn;
+}
+
+function downloadImg(elLink) {
+  isDownloading = true;
+  isText = false;
+  renderMeme();
+  const imgContent = gElCanvas.toDataURL();
+  elLink.href = imgContent;
 }

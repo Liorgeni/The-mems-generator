@@ -20,13 +20,3 @@ function loadImageFromInput(ev, onImageReady) {
 
   reader.readAsDataURL(ev.target.files[0]);
 }
-
-function downloadCanvas(elLink) {
-  const data = gElCanvas.toDataURL();
-  elLink.href = data;
-}
-
-function downloadImg(elLink) {
-  const imgContent = gElCanvas.toDataURL();
-  elLink.href = imgContent;
-}

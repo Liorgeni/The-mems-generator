@@ -13,14 +13,12 @@
   </head>
   <body class="main-layout" onload="onInit()">
     <header
-    class="main-header full main-layout flex align-center "
+    class="main-header main-layout flex align-center "
     >
     <nav class="main-nav flex top-nav">
-      <img id="top-logo" src="img/logo.jpg" alt="">
+      <img onclick="onInit()" id="top-logo" src="img/logo.jpg" alt="">
       <ul class="flex clean-list align-center">
-        <li><a href="#">Memes</a></li>
         <li><a href="#">Gallery</a></li>
-        <li><a href="#">About</a></li>
       </ul>
     </nav>
     </header>
@@ -37,59 +35,38 @@
         <section class="gallery" ></section>
     </section>
 
-    <section class=" editor ">
-      <h2>Editor</h2>
+    <section class="grid-container ">
       <div class="canvas-container ">
-        <canvas id="my-canvas" height="600" width="600"></canvas>
+        <canvas id="my-canvas"></canvas>
       </div>
       <div class="operators">
-        <div class="settings">
-            <ul class="flex clean-list">
+            <ul class="flex clean-list space-between">
                 <li><span class="material-symbols-outlined" onclick="onDecreaseFont()"> text_decrease </span></li>
-                <li><span class="material-symbols-outlined" onclick="onIncreaseFont(this.value)"> text_increase </span></li>
-                <li><span class="material-symbols-outlined" onclick="clearCanvas()"> delete </span></li>
-                <li><label for="color"><span class="material-symbols-outlined">palette</label></span></li>
+                <li><span class="material-symbols-outlined" onclick="onIncreaseFont()"> text_increase </span></li>
+                <li><span class="material-symbols-outlined" onclick="onClearCanvas()"> delete </span></li>
+                <li><label for="style2"><span class="material-symbols-outlined">palette</span></label></li>
+                <li><span onclick="onAlignTextLeft()" class="material-symbols-outlined">format_align_left</span></li>
+                <li><span onclick="onAlignTextCenter()" class="material-symbols-outlined">format_align_center</span></li>
+                <li><span onclick="onAlignTextRight()" class="material-symbols-outlined">format_align_right</span></li>
+                <li><span onclick="onAddLine()" class="material-symbols-outlined">add</span></li>
+                <input class="trans" type="color" value="#ffffff" id="style2" onchange="onChangeTextColor(this.value)" />  
+
             </ul>
-        </div>
-        <input type="text" onkeyup="onTextInput(this.value)" />
-          <!-- <input type="color" onchange="onChangeTextColor(this.value)" />   -->
-      </div>
- 
-</div>
+
+            <label>
+        <input class="text-input" type="text" onkeydown="onTextInput(this.value)" />
+
 <div class="social">
-    <a href="#" class="btn" onclick="downloadImg(this)" download="my-img.jpeg"
+    <a href="#" class="social btn1" onclick="downloadImg(this)" download="my-img.jpeg"
     ><button>DOWNLOAD</button></a>
-  <button onclick="onUploadImg()">SHARE</button>
-</div>
+  <button class="social btn2" onclick="onUploadImg()">SHARE</button>
 </div>
 </section>
+<script src="js/storage-service.js"></script>
 <script src="js/download-share-service.js"></script>
     <script src="js/memeService.js"></script>
     <script src="js/memeController.js"></script>
+    <script src="js/galleryController.js"></script>
     <script src="js/main.js"></script>
   </body>
 </html>
-
-
-
-
-
-
-<!-- <main class="main-content card-layout">
-<div class="card flex">
-  <img class="card-image" src="/images/001.png" alt="" />
-  <div class="card-content">
-    <h2 class="card-title">
-      Duis aute irure dolor in henderit in voluptate.
-    </h2>
-    <p class="card-text">
-      Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-      nisi ut aliquip ex ea commo doconsequat, sunt in culpa qui officia
-      deserunt mollit anim id est laborum.
-      <br /><br /><br />
-      Duis aute irure dolor in reprehenderit in voluptate velit esse
-      cillum dolore eu fugiat nulla pariatur...
-    </p>
-    <button class="card-read">Continue Reading</button>
-  </div>
-</div> -->
