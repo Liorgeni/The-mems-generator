@@ -52,6 +52,7 @@ function renderMeme() {
 // Actions
 
 function onSelectMeme(id) {
+  imgSelected = true;
   document.querySelector(".gallery-content").classList.add("hide");
   document.querySelector(".grid-container").style.display = "grid";
   resizeCanvas();
@@ -61,8 +62,8 @@ function onSelectMeme(id) {
 
 function onClearCanvas() {
   clearCanvas();
-  renderMeme();
   clearInput();
+  renderMeme();
 }
 
 function onTextInput(text) {

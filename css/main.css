@@ -109,6 +109,7 @@ button {
   background-color: var(--clr5);
   color: var(--clr6);
   border-color: transparent;
+  margin-top: 50px;
 }
 
 button:hover {
