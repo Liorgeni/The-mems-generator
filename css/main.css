@@ -7,6 +7,8 @@
   --clr3: #f8f8f8;
   --clr5: #ff9826;
   --clr6: #ffffff;
+  --clr7: #e5e5e5;
+  --clr8: #727272;
 }
 
 * {
@@ -15,6 +17,7 @@
 
 html {
   line-height: 1.25;
+  background-color: var(--clr3);
 }
 
 .trans {
@@ -27,6 +30,8 @@ body {
   margin: 0;
   font-size: 1rem;
   height: 95vh;
+  background-color: var(#ebebeb);
+  overflow-y: hidden;
 }
 
 header {
@@ -34,6 +39,9 @@ header {
   height: 50px;
   left: 0px;
   top: 0px;
+  margin: 0;
+  border-bottom: 1px solid var(--clr2);
+  background-color: var(--clr3);
 }
 
 /* Latouts */
@@ -61,7 +69,6 @@ a:hover {
 
 img {
   cursor: pointer;
-
   margin: 10px;
   height: 210px;
   width: 210px;
@@ -80,21 +87,27 @@ canvas {
   margin: 0 auto;
   outline: 1px solid black;
   background-color: white;
-  margin-top: 30px;
+  margin-top: 100px;
 }
 
 input[type="text"] {
-  width: 367px;
+  width: 472px;
   height: 66px;
+  margin-top: 35px;
+  margin-left: 27px;
   box-sizing: border-box;
+  border-radius: 25px;
+  border: 1px solid var(--clr2);
 }
 
 .search-box input[type="text"] {
   height: 42px;
-  width: 1440px;
-  left: 20px;
-  top: 80px;
-  /* border-radius: 81px; */
+  display: block;
+  width: 95vw;
+  border-radius: 81px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  margin-left: 0;
 }
 
 button {
@@ -151,6 +164,7 @@ img:hover {
   height: 32px;
   left: 20px;
   top: 9px;
+  margin-left: 0;
 }
 
 #top-logo:hover {
@@ -160,6 +174,7 @@ img:hover {
 .operators {
   border: 1px solid var(--clr2);
   background-color: var(--clr3);
+  height: 95vh;
 }
 
 /* Helpers */
@@ -167,6 +182,11 @@ img:hover {
 .flex {
   display: flex;
 }
+
+.flex.column {
+  flex-direction: column;
+}
+
 .flex.align-center {
   align-items: center;
 }
@@ -194,6 +214,136 @@ img:hover {
   grid-template-rows: 1fr;
   gap: 10px;
   grid-template-areas: "canvas-container    operators";
-  min-height: 60vh;
+  /* min-height: 60vh; */
   place-content: center;
+}
+
+/* /////////////////////////////////////// */
+
+.back {
+  color: var(--clr1);
+  margin-top: 40px;
+  margin-bottom: 30px;
+  margin-left: 3px;
+  cursor: pointer;
+}
+
+.back:hover {
+  color: var(--clr5);
+}
+
+.gallery-content {
+  width: 100vw;
+}
+
+.gallery {
+  margin-left: 20px;
+}
+
+.menu-toggle-btn {
+  display: none;
+}
+
+.main-screen {
+  position: fixed;
+  inset: 0;
+  background-color: #000;
+  background-color: rgb(0 0 0 / 70%);
+  cursor: pointer;
+  pointer-events: none;
+
+  opacity: 0;
+
+  transition: opacity 0.6s;
+}
+
+body.menu-open .main-screen {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+@media (max-width: 568px) {
+  nav ul {
+    position: fixed;
+    /* top: 0;
+    right: 0; */
+    flex-direction: column;
+    height: 95vh;
+    background-color: var(--clr5);
+    border-inline-start: 1px solid var(--clr1);
+    width: 100vw;
+    transform: translateX(100%);
+    transition: transform 1s;
+    text-align: center;
+    text-justify: center;
+    color: var(--clr6);
+  }
+  body.menu-open nav ul {
+    transform: translateX(0);
+    justify-content: space-evenly;
+    /* display: flex; */
+  }
+
+  .grid-container {
+    display: grid;
+    margin: auto;
+    grid-template-rows: 6fr 4fr;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    grid-template-areas: "canvas-container";
+    grid-template-areas: "operators";
+
+    max-height: 130vh;
+    place-content: center;
+  }
+  .main-header .main-nav a {
+    color: var(--clr6);
+    font-weight: 500;
+    /* text-decoration: underline; */
+  }
+  .main-header .main-nav a:hover {
+    color: var(--clr1);
+  }
+  .menu-toggle-btn {
+    display: inline-block;
+    z-index: 999;
+  }
+}
+
+.edit-text-line-container {
+  align-items: baseline;
+}
+
+.edit-style-text-container {
+  margin: 40px;
+  justify-content: space-between;
+}
+.edit-text-title {
+  flex-grow: 1;
+  font-size: 24px;
+  color: var(--clr8);
+  font-weight: 500;
+  line-height: 2;
+}
+
+.editor {
+  height: 107px;
+  width: 486px;
+  margin: 20px;
+  margin-top: 50px;
+  padding: 7px;
+}
+
+.social {
+  margin-top: 50px;
+}
+
+.editor-center-layout {
+  border: 1px solid var(--clr2);
+  border-radius: 25px;
+}
+
+.icon-delete {
+  margin-right: 30px;
+  color: red;
 }

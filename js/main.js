@@ -9,3 +9,7 @@ function onInit() {
   renderGallery();
   resizeCanvas();
 }
+
+function toggleMenu() {
+  document.body.classList.toggle("menu-open");
+}

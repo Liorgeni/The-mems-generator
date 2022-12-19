@@ -1,7 +1,7 @@
 "use strict";
 
-let currImg;
-var gFilterBy = { keywords: "" };
+// let currImg;
+let gFilterBy = "";
 let gKeywordSearchCountMap = { funny: 12, cat: 16, baby: 2 };
 
 const gImgs = [
@@ -36,6 +36,7 @@ var gMeme = {
       color: "white",
       x: 10,
       y: 50,
+      stroke: "black",
     },
   ],
 };
@@ -48,6 +49,7 @@ function getDefaultNewLine() {
     color: "white",
     x: 10,
     y: 50,
+    stroke: "black",
   };
 }
 
@@ -72,14 +74,60 @@ function getCurImg() {
   return curImg;
 }
 
-function setFilterBy(filterBy) {
-  gFilterBy.keywords = filterBy;
-  return gFilterBy;
+function setFilter(filterBy) {
+  gFilterBy = filterBy;
 }
 
+// function setFilterBy(filterBy) {
+//   gFilterBy.keywords = filterBy;
+//   return gFilterBy;
+// }
+
+// function setFilterBy() {
+//   var images = gImgs;
+//   if (gFilterBy === "") images = gImgs.slice();
+//   else {
+//     images = gImgs.filter((img) =>
+//       img.keywords.find((key) => key.includes(gFilterBy))
+//     );
+//   }
+//   console.log(images);
+
+//   return images;
+// }
+
+// function setFilterBy(filterBy) {
+//   console.log(filterBy);
+//   // if (filterBy.title !== undefined) gFilterBy.title = filterBy.title;
+//   // console.log(filterBy.title);
+//   var currImgs;
+//   if (gFilterBy === "") currImgs = gImgs.slice();
+//   // else {
+//   //   currImgs = gImgs.filter((img) =>
+//   //     img.keywords.find((key) => key.includes(gFilterBy.toLowerCase()))
+//   //   );
+//   // }
+//   // console.log(currImgs);
+
+//   return currImgs;
+
+//   // gFilterBy.keywords = filterBy;
+//   // console.log(gFilterBy);
+//   // return gFilterBy;
+//   //   if (filterBy.rate !== undefined) gFilterBy.rate = filterBy.rate;
+// }
+
 function getImages() {
-  const images = gImgs;
-  return images;
+  console.log(gFilterBy);
+  var currImgs;
+  if (!gFilterBy) return gImgs;
+  else {
+    currImgs = gImgs.filter((img) =>
+      img.keywords.find((key) => key.includes(gFilterBy))
+    );
+  }
+  console.log(currImgs, "img");
+  return currImgs;
 }
 
 function setTextInput(text) {
@@ -97,11 +145,17 @@ function setTextColor(color) {
   gMeme.lines[gMeme.selectedLineIdx].color = color;
 }
 
+function setStrokeColor(stroke) {
+  gMeme.lines[gMeme.selectedLineIdx].stroke = stroke;
+}
+
 function getGMemeLines() {
   return gMeme.lines;
 }
 
 function clearCanvas() {
+  const confirmDelete = confirm("Are you sure you want to start over?");
+  if (!confirmDelete) return;
   gMeme.selectedLineIdx = 0;
   gMeme.lines = [getDefaultNewLine()];
 }

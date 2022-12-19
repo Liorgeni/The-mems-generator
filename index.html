@@ -12,54 +12,74 @@
     />
   </head>
   <body class="main-layout" onload="onInit()">
+    <div class="main-screen" onclick="toggleMenu()"></div>
+
     <header
     class="main-header main-layout flex align-center "
     >
     <nav class="main-nav flex top-nav">
       <img onclick="onInit()" id="top-logo" src="img/logo.jpg" alt="">
-      <ul class="flex clean-list align-center">
-        <!-- <li><a href="#">Gallery</a></li> -->
+      <ul class="flex clean-list align-center space-between" >
+        <li><a onclick="onInit()" href="#">Gallery</a></li>
+        <!-- <li><a href="#">About</a></li> -->
+        <!-- <li class="problem hide"><a href="#">cvxvcx</a></li> -->
+
       </ul>
+      <button class="menu-toggle-btn" onclick="toggleMenu()">☰</button>
     </nav>
     </header>
 
-    <section class="gallery-content">
-        <!-- <section class="search-box">
+
+    <section class="gallery-content main-layout">
+        <section class="search-box">
             <input
-              class="search-Input"
+              class="search-Input main-layout"
               type="text"
-              onkeyup="onKeyUpSearch()"
+              onkeyup="onSetFilter(this.value)"
               placeholder="Search meme..."
             />
-          </section> -->
+          </section>
         <section class="gallery" ></section>
     </section>
 
     <section class="grid-container ">
       <div class="canvas-container ">
+        <p class="back" onclick="onInit()">Back to gallery</p>
         <canvas id="my-canvas"></canvas>
       </div>
-      <div class="operators">
-            <ul class="flex clean-list space-between">
-                <li><span class="material-symbols-outlined" onclick="onDecreaseFont()"> text_decrease </span></li>
-                <li><span class="material-symbols-outlined" onclick="onIncreaseFont()"> text_increase </span></li>
-                <li><span class="material-symbols-outlined" onclick="onClearCanvas()"> delete </span></li>
+      <div class="operators ">
+            <ul class="flex clean-list space-between column editor">
+              <div class="edit-text-line-container flex">
+              <li class="edit-text-title">Edit Text Lines</li>
+              <li><span class="material-symbols-outlined icon-delete" onclick="onClearCanvas()"> delete </span></li>
+              <li><span onclick="onAddLine()" class="material-symbols-outlined icon-add">add</span></li>
+            </div>
+            <div class="editor-center-layout">
+            <div class="edit-style-text-container flex ">
+                  <li><span class="material-symbols-outlined" onclick="onDecreaseFont()"> text_decrease </span></li>
+                  <li><span class="material-symbols-outlined" onclick="onIncreaseFont()"> text_increase </span></li>
+                  <input class="trans" style="opacity: 0; position:absolute" type="color" value="#ffffff" id="style2" oninput="onChangeTextColor(this.value)" />  
                 <li><label for="style2"><span class="material-symbols-outlined">palette</span></label></li>
+            
+              <div>
+                <input  style="opacity: 0; position:absolute" type="color" value="#ffffff" id="style3" oninput="onChangeStrokeColor(this.value)" />  
+                <li><label for="style3"><span class="material-symbols-outlined">border_color</span></label></li>
+                  
+              </div>
                 <li><span onclick="onAlignTextLeft()" class="material-symbols-outlined">format_align_left</span></li>
                 <li><span onclick="onAlignTextCenter()" class="material-symbols-outlined">format_align_center</span></li>
                 <li><span onclick="onAlignTextRight()" class="material-symbols-outlined">format_align_right</span></li>
-                <li><span onclick="onAddLine()" class="material-symbols-outlined">add</span></li>
-                <input class="trans" type="color" value="#ffffff" id="style2" onchange="onChangeTextColor(this.value)" />  
-
+              </div>
             </ul>
+            <input class="text-input" type="text" onkeydown="onTextInput(this.value)" />
+          
 
-            <label>
-        <input class="text-input" type="text" onkeydown="onTextInput(this.value)" />
 
-<div class="social">
-    <a href="#" class="social btn1" onclick="downloadImg(this)" download="my-img.jpeg"
+<div class="social space-between flex">
+    <a href="#" class=" btn1" onclick="downloadImg(this)" download="my-img.jpeg"
     ><button>DOWNLOAD</button></a>
-  <button class="social btn2" onclick="onUploadImg()">SHARE</button>
+  <button class=" btn2" onclick="onUploadImg()">SHARE</button>
+</div>
 </div>
 </section>
 <script src="js/storage-service.js"></script>
