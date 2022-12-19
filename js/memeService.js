@@ -78,47 +78,8 @@ function setFilter(filterBy) {
   gFilterBy = filterBy;
 }
 
-// function setFilterBy(filterBy) {
-//   gFilterBy.keywords = filterBy;
-//   return gFilterBy;
-// }
-
-// function setFilterBy() {
-//   var images = gImgs;
-//   if (gFilterBy === "") images = gImgs.slice();
-//   else {
-//     images = gImgs.filter((img) =>
-//       img.keywords.find((key) => key.includes(gFilterBy))
-//     );
-//   }
-//   console.log(images);
-
-//   return images;
-// }
-
-// function setFilterBy(filterBy) {
-//   console.log(filterBy);
-//   // if (filterBy.title !== undefined) gFilterBy.title = filterBy.title;
-//   // console.log(filterBy.title);
-//   var currImgs;
-//   if (gFilterBy === "") currImgs = gImgs.slice();
-//   // else {
-//   //   currImgs = gImgs.filter((img) =>
-//   //     img.keywords.find((key) => key.includes(gFilterBy.toLowerCase()))
-//   //   );
-//   // }
-//   // console.log(currImgs);
-
-//   return currImgs;
-
-//   // gFilterBy.keywords = filterBy;
-//   // console.log(gFilterBy);
-//   // return gFilterBy;
-//   //   if (filterBy.rate !== undefined) gFilterBy.rate = filterBy.rate;
-// }
-
 function getImages() {
-  console.log(gFilterBy);
+  // console.log(gFilterBy);
   var currImgs;
   if (!gFilterBy) return gImgs;
   else {
